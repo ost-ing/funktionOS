@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Project version="2G - 2.0.1" name="funktion">
+  <Target name="funktion" isCurrent="1">
+    <Device manufacturerId="9" manufacturerName="ST" chipId="287" chipName="STM32F429ZI" boardId="" boardName="" coreId="4" coreName="Cortex M4"/>
+    <BuildOption>
+      <Compile>
+        <Option name="OptimizationLevel" value="0"/>
+        <Option name="UseFPU" value="0"/>
+        <Option name="UserEditCompiler" value="-std=c99; -Wno-unused-but-set-variable; -Wno-comment; -Wno-missing-braces;"/>
+        <Option name="SupportCPlusplus" value="1"/>
+        <Option name="FPU" value="2"/>
+        <Includepaths>
+          <Includepath path="."/>
+        </Includepaths>
+        <DefinedSymbols>
+          <Define name="STM32F429ZI"/>
+          <Define name="SUPPORT_CPLUSPLUS"/>
+          <Define name="__FPU_USED"/>
+        </DefinedSymbols>
+      </Compile>
+      <Link useDefault="0">
+        <Option name="DiscardUnusedSection" value="0"/>
+        <Option name="UserEditLinkder" value=""/>
+        <Option name="UseMemoryLayout" value="1"/>
+        <Option name="nostartfiles" value="0"/>
+        <Option name="LTO" value="0"/>
+        <Option name="IsNewStartupCode" value="1"/>
+        <Option name="Library" value="Retarget"/>
+        <Option name="UserEditLinker" value="-lstdc++;"/>
+        <LinkedLibraries>
+          <Libset dir="..\..\..\..\..\..\program files (x86)\gnu tools arm embedded\4.9 2014q4\arm-none-eabi\lib\armv7e-m\fpu\" libs="m"/>
+        </LinkedLibraries>
+        <MemoryAreas debugInFlashNotRAM="1">
+          <Memory name="IROM1" type="ReadOnly" size="0x00200000" startValue="0x08000000"/>
+          <Memory name="IRAM1" type="ReadWrite" size="0x00030000" startValue="0x20000000"/>
+          <Memory name="IROM2" type="ReadOnly" size="" startValue=""/>
+          <Memory name="IRAM2" type="ReadWrite" size="0xD0800000" startValue="0xD0000000"/>
+        </MemoryAreas>
+        <LocateLinkFile path="../../../../appdata/roaming/coocox/coide/configuration/programdata/funktion/arm-gcc-link.ld" type="0"/>
+      </Link>
+      <Output>
+        <Option name="OutputFileType" value="0"/>
+        <Option name="Path" value="./"/>
+        <Option name="Name" value="funktion"/>
+        <Option name="HEX" value="1"/>
+        <Option name="BIN" value="1"/>
+      </Output>
+      <User>
+        <UserRun name="Run#1" type="Before" checked="0" value=""/>
+        <UserRun name="Run#1" type="After" checked="0" value=""/>
+      </User>
+    </BuildOption>
+    <DebugOption>
+      <Option name="org.coocox.codebugger.gdbjtag.core.adapter" value="ST-Link"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.debugMode" value="SWD"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.clockDiv" value="1M"/>
+      <Option name="org.coocox.codebugger.gdbjtag.corerunToMain" value="1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.jlinkgdbserver" value=""/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.userDefineGDBScript" value=""/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.targetEndianess" value="0"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.jlinkResetMode" value="Type 0: Normal"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.resetMode" value="SYSRESETREQ"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.ifSemihost" value="0"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.ifCacheRom" value="1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.ipAddress" value="127.0.0.1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.portNumber" value="2009"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.autoDownload" value="1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.verify" value="1"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.downloadFuction" value="Erase Effected"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.defaultAlgorithm" value="coocox-flash/coide_stm32f4xx_2048k/stm32f4xx_2048.elf"/>
+    </DebugOption>
+    <ExcludeFile/>
+  </Target>
+  <Components path="./">
+    <Component id="97" name="cmsis_core" path="" type="BasicComponet"/>
+    <Component id="134" name="STM32F429xx_cmsisboot" path="" type="BasicComponet"/>
+  </Components>
+  <LocalComponents/>
+  <Files>
+    <File name="components/STM32F429xx_cmsisboot" path="" type="2"/>
+    <File name="components/STM32F429xx_cmsisboot/system_stm32f4xx.c" path="components/coocox-master/STM32F429xx_cmsisboot/source/system_stm32f4xx.c" type="1"/>
+    <File name="peripherals/pulse_generator.c" path="src/peripherals/pulse_generator.c" type="1"/>
+    <File name="core/gpio.h" path="src/core/gpio.h" type="1"/>
+    <File name="core/dma.h" path="src/core/dma.h" type="1"/>
+    <File name="core/definitions.c" path="src/core/definitions.c" type="1"/>
+    <File name="application/input_manager.c" path="src/application/input_manager.c" type="1"/>
+    <File name="peripherals/render/image_picker.h" path="src/peripherals/render/image_picker.h" type="1"/>
+    <File name="peripherals/AD9833.h" path="src/peripherals/AD9833.h" type="1"/>
+    <File name="components/cmsis_core/core_cmInstr.h" path="components/coocox-master/cmsis_core/source/core_cmInstr.h" type="1"/>
+    <File name="core/usart.h" path="src/core/usart.h" type="1"/>
+    <File name="components/cmsis_core" path="" type="2"/>
+    <File name="components/cmsis_core/core_cmFunc.h" path="components/coocox-master/cmsis_core/source/core_cmFunc.h" type="1"/>
+    <File name="peripherals/rotary_encoder.c" path="src/peripherals/rotary_encoder.c" type="1"/>
+    <File name="core/serial.c" path="src/core/serial.c" type="1"/>
+    <File name="peripherals/render/geometry.h" path="src/peripherals/render/geometry.h" type="1"/>
+    <File name="components/cmsis_core/arm_const_structs.h" path="components/coocox-master/cmsis_core/source/arm_const_structs.h" type="1"/>
+    <File name="components/cmsis_core/arm_common_tables.h" path="components/coocox-master/cmsis_core/source/arm_common_tables.h" type="1"/>
+    <File name="application" path="" type="2"/>
+    <File name="core/libraries" path="" type="2"/>
+    <File name="core/clock.c" path="src/core/clock.c" type="1"/>
+    <File name="core/libraries/exceptions4c/e4c_lite.h" path="src/core/libraries/exceptions4c/e4c_lite.h" type="1"/>
+    <File name="components/cmsis_core/core_sc300.h" path="components/coocox-master/cmsis_core/source/core_sc300.h" type="1"/>
+    <File name="core/spi.c" path="src/core/spi.c" type="1"/>
+    <File name="peripherals/pulse_generator.h" path="src/peripherals/pulse_generator.h" type="1"/>
+    <File name="core" path="" type="2"/>
+    <File name="core/gpio.c" path="src/core/gpio.c" type="1"/>
+    <File name="peripherals/render/renderdef.h" path="src/peripherals/render/renderdef.h" type="1"/>
+    <File name="peripherals/render/render.h" path="src/peripherals/render/render.h" type="1"/>
+    <File name="components/cmsis_core/core_cm4_simd.h" path="components/coocox-master/cmsis_core/source/core_cm4_simd.h" type="1"/>
+    <File name="core/timer.c" path="src/core/timer.c" type="1"/>
+    <File name="components/STM32F429xx_cmsisboot/stm32f429xx.h" path="components/coocox-master/STM32F429xx_cmsisboot/source/stm32f429xx.h" type="1"/>
+    <File name="peripherals/render/image_picker.c" path="src/peripherals/render/image_picker.c" type="1"/>
+    <File name="core/utilities.c" path="src/core/utilities.c" type="1"/>
+    <File name="core/sdram.c" path="src/core/sdram.c" type="1"/>
+    <File name="core/definitions.h" path="src/core/definitions.h" type="1"/>
+    <File name="core/dma.c" path="src/core/dma.c" type="1"/>
+    <File name="core/libraries/exceptions4c/e4c_lite.c" path="src/core/libraries/exceptions4c/e4c_lite.c" type="1"/>
+    <File name="peripherals/render/number_picker.h" path="src/peripherals/render/number_picker.h" type="1"/>
+    <File name="peripherals/ILI9341.h" path="src/peripherals/ILI9341.h" type="1"/>
+    <File name="components/cmsis_core/core_cm0plus.h" path="components/coocox-master/cmsis_core/source/core_cm0plus.h" type="1"/>
+    <File name="peripherals/render/sidemenu.h" path="src/peripherals/render/sidemenu.h" type="1"/>
+    <File name="core/exti.c" path="src/core/exti.c" type="1"/>
+    <File name="application/main.c" path="src/application/main.c" type="1"/>
+    <File name="peripherals/render/sidemenu.c" path="src/peripherals/render/sidemenu.c" type="1"/>
+    <File name="components/cmsis_core/core_sc000.h" path="components/coocox-master/cmsis_core/source/core_sc000.h" type="1"/>
+    <File name="components/cmsis_core/core_cm0.h" path="components/coocox-master/cmsis_core/source/core_cm0.h" type="1"/>
+    <File name="peripherals/render" path="" type="2"/>
+    <File name="core/clock.h" path="src/core/clock.h" type="1"/>
+    <File name="peripherals/rotary_encoder.h" path="src/peripherals/rotary_encoder.h" type="1"/>
+    <File name="components/STM32F429xx_cmsisboot/system_stm32f4xx.h" path="components/coocox-master/STM32F429xx_cmsisboot/source/system_stm32f4xx.h" type="1"/>
+    <File name="peripherals/AD9833.c" path="src/peripherals/AD9833.c" type="1"/>
+    <File name="core/libraries/exceptions4c" path="" type="2"/>
+    <File name="peripherals/render/render.c" path="src/peripherals/render/render.c" type="1"/>
+    <File name="components/cmsis_core/core_cm3.h" path="components/coocox-master/cmsis_core/source/core_cm3.h" type="1"/>
+    <File name="core/timer.h" path="src/core/timer.h" type="1"/>
+    <File name="peripherals/ILI9341.c" path="src/peripherals/ILI9341.c" type="1"/>
+    <File name="core/sdram.h" path="src/core/sdram.h" type="1"/>
+    <File name="core/spi.h" path="src/core/spi.h" type="1"/>
+    <File name="core/serial.h" path="src/core/serial.h" type="1"/>
+    <File name="application/input_manager.h" path="src/application/input_manager.h" type="1"/>
+    <File name="peripherals/render/number_picker.c" path="src/peripherals/render/number_picker.c" type="1"/>
+    <File name="components/STM32F429xx_cmsisboot/startup_stm32f429xx.S" path="components/coocox-master/STM32F429xx_cmsisboot/source/startup_stm32f429xx.S" type="1"/>
+    <File name="components/cmsis_core/core_cm4.h" path="components/coocox-master/cmsis_core/source/core_cm4.h" type="1"/>
+    <File name="core/utilities.h" path="src/core/utilities.h" type="1"/>
+    <File name="core/core.h" path="src/core/core.h" type="1"/>
+    <File name="components" path="" type="2"/>
+    <File name="core/usart.c" path="src/core/usart.c" type="1"/>
+    <File name="peripherals" path="" type="2"/>
+    <File name="core/exti.h" path="src/core/exti.h" type="1"/>
+    <File name="components/STM32F429xx_cmsisboot/stm32f4xx.h" path="components/coocox-master/STM32F429xx_cmsisboot/source/stm32f4xx.h" type="1"/>
+    <File name="components/cmsis_core/arm_math.h" path="components/coocox-master/cmsis_core/source/arm_math.h" type="1"/>
+  </Files>
+  <Bookmarks/>
+</Project>
