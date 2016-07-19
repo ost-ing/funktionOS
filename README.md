@@ -8,6 +8,8 @@ Additionally, the developer will need to modify the software to match the hardwa
 
 To program the function generator an additional client software application has been written in C# for windows .NET. This application uses the serial port to program the function generator to change its waveform and periodicity.
 
-You will require the CooCox IDE to develop this with the ARM GNU toolchain
+You will require the CooCox IDE to develop this with the ARM GNU toolchain.
 
+`funktion/` - The project
+`client/` - The .NET desktop client for controlling the function generator
 
