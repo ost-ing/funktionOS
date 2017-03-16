@@ -31,9 +31,9 @@
 
 /* Represents an exception type */
 struct e4c_exception_type{
-	const char * name;
-	const char * default_message;
-	const struct e4c_exception_type * supertype;
+  const char * name;
+  const char * default_message;
+  const struct e4c_exception_type * supertype;
 };
 
 /* Declarations and definitions of exception types */
@@ -46,10 +46,10 @@ E4C_DECLARE_EXCEPTION(NullPointerException);
 
 /* Represents an instance of an exception type */
 struct e4c_exception{
-	char message[E4C_MESSAGE_SIZE];
-	const char * file;
-	int line;
-	const struct e4c_exception_type * type;
+  char message[E4C_MESSAGE_SIZE];
+  const char * file;
+  int line;
+  const struct e4c_exception_type * type;
 };
 
 /* Retrieve current thrown exception */

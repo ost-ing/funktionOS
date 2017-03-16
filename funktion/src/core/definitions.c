@@ -9,5 +9,5 @@ E4C_DEFINE_EXCEPTION(InvalidOperationException, "Invalid operation exception", R
 
 void Regset(volatile uint32_t* reg, unsigned int bitfield, uint set)
 {
-	*reg = ((set != 0) ? (*reg | bitfield) : (*reg & ~bitfield));
+  *reg = ((set != 0) ? (*reg | bitfield) : (*reg & ~bitfield));
 }

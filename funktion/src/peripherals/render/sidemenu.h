@@ -5,8 +5,8 @@
 
 typedef struct
 {
-	void (*button_pressed)(void);
-	void* Render;
+  void (*button_pressed)(void);
+  void* Render;
 }SideMenuItem;
 
 void sidemenu_init(void);

@@ -7,9 +7,9 @@
 
 typedef struct
 {
-	uchar FontWidth;
-	uchar FontHeight;
-	const ushort *data;
+  uchar FontWidth;
+  uchar FontHeight;
+  const ushort *data;
 }Font;
 
 //TODO: These cannot be static.
@@ -20,80 +20,80 @@ static const Font Font7x10  = { 7, 10, FontStyle7x10 };
 
 typedef enum
 {
-	Rotation0 = 0,
-	Rotation90,
-	Rotation180,
-	Rotation360
+  Rotation0 = 0,
+  Rotation90,
+  Rotation180,
+  Rotation360
 }RenderRotation;
 
 typedef struct
 {
-	uint Stroke;
-	bool IsInnerStroke;
-	bool IsFilled;
-	uint StrokeColor;
-	uint FillColor;
+  uint Stroke;
+  bool IsInnerStroke;
+  bool IsFilled;
+  uint StrokeColor;
+  uint FillColor;
 }RenderProperties;
 
 typedef enum
 {
-	RenderTypeRect,
-	RenderTypeLine,
-	RenderTypeIsoTriangle,
-	RenderTypeSine,
-	RenderTypeLabel,
-	RenderTypePoly,
+  RenderTypeRect,
+  RenderTypeLine,
+  RenderTypeIsoTriangle,
+  RenderTypeSine,
+  RenderTypeLabel,
+  RenderTypePoly,
 }RenderType;
 
 typedef struct
 {
-	RenderType Type;
-	Frame Bounds;
+  RenderType Type;
+  Frame Bounds;
 }RenderHeader;
 
 typedef struct
 {
-	RenderHeader Header;
-	RenderProperties Properties;
+  RenderHeader Header;
+  RenderProperties Properties;
 }RectRender;
 
 typedef struct
 {
-	RenderHeader Header;
-	RenderProperties Properties;
-	ushort Amplitude;
+  RenderHeader Header;
+  RenderProperties Properties;
+  ushort Amplitude;
 }SineRender;
 
 typedef struct
 {
-	RenderHeader Header;
-	uint Foreground;
-	uint Background;
-	char* String;
-	Font Font;
+  RenderHeader Header;
+  uint Foreground;
+  uint Background;
+  char* String;
+  Font Font;
 }LabelRender;
 
 typedef struct
 {
-	RenderHeader Header;
-	RenderProperties Properties;
-	uchar Rotation;
+  RenderHeader Header;
+  RenderProperties Properties;
+  uchar Rotation;
 }IsoTriangleRender; /* Isosceles Triangle */
 
 typedef struct
 {
-	RenderHeader Header;
-	RenderProperties Properties;
-	Point PositionEnd;
+  RenderHeader Header;
+  RenderProperties Properties;
+  Point PositionEnd;
 }LineRender;
 
 typedef struct
 {
-	RenderHeader Header;
-	uint Stroke;
-	uint StrokeColour;
-	Point* Vertices;
-	uint VertCount;
+  RenderHeader Header;
+  uint Stroke;
+  uint StrokeColour;
+  Point* Vertices;
+  uint VertCount;
 }PolyRender;
 
 

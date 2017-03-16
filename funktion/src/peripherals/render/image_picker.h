@@ -5,8 +5,8 @@
 #include "render.h"
 
 typedef struct{
-	Point Position;
-	PolyRender* images;
+  Point Position;
+  PolyRender* images;
 }ImagePicker;
 
 ImagePicker number_picker_init(Point p, PolyRender* images);

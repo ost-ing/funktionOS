@@ -20,17 +20,17 @@
 
 typedef enum
 {
-	ILI9341_Orientation_Portrait1 = 0x58,		/* Default */
-	ILI9341_Orientation_Portrait2 = 0x88,
-	ILI9341_Orientation_Landscape1 = 0x28,
-	ILI9341_Orientation_Landscape2 = 0xE8,
+  ILI9341_Orientation_Portrait1 = 0x58,    /* Default */
+  ILI9341_Orientation_Portrait2 = 0x88,
+  ILI9341_Orientation_Landscape1 = 0x28,
+  ILI9341_Orientation_Landscape2 = 0xE8,
 }ILI9341Orientation;
 
 typedef struct
 {
-	ILI9341Orientation Orientation;
-	ushort Width;
-	ushort Height;
+  ILI9341Orientation Orientation;
+  ushort Width;
+  ushort Height;
 }ILI9341Settings;
 
 

@@ -5,43 +5,43 @@
 
 typedef enum
 {
-	TimerFunctionalState_Enabled  = 0,
-	TimerFunctionalState_Disabled = 1,
+  TimerFunctionalState_Enabled  = 0,
+  TimerFunctionalState_Disabled = 1,
 }TimerFunctionalState;
 
 typedef struct {
-	/*CR1*/
-	bool CEN;	//Counter enable
-	bool UDIS;	//Update disable
-	bool URS;	//Update request source
-	bool OPM;	//One pulse mode
-	bool ARPE;	//Auto reload preload enable
+  /*CR1*/
+  bool CEN;   //Counter enable
+  bool UDIS;  //Update disable
+  bool URS;   //Update request source
+  bool OPM;   //One pulse mode
+  bool ARPE;  //Auto reload preload enable
 
-	/*CR2*/
-	bool MMS_0;	//Master mode selection
-	bool MMS_1;	//Master mode selection
-	bool MMS_2;	//Master mode selection
-				//Reset = 0b000,
-				//Enable = 0b001,
-				//Update = 0b010,
+  /*CR2*/
+  bool MMS_0;  //Master mode selection
+  bool MMS_1;  //Master mode selection
+  bool MMS_2;  //Master mode selection
+        //Reset = 0b000,
+        //Enable = 0b001,
+        //Update = 0b010,
 
-	/*TIMX_DIER*/
-	bool UDE; 	//Update DMA request enable
-	bool UIE;	//Update interrupt enable
+  /*TIMX_DIER*/
+  bool UDE;   //Update DMA request enable
+  bool UIE;  //Update interrupt enable
 
-	/*TIMX_SR*/
-	bool UIF;	//Update interrupt flag
+  /*TIMX_SR*/
+  bool UIF;  //Update interrupt flag
 
-	/*TIMX_EGR*/
-	bool UG;	//Update generation
+  /*TIMX_EGR*/
+  bool UG;  //Update generation
 
 }TIMConfig;
 
 typedef struct TimerInstance{
-	uint _Mapping;
-	uint PeripheralMapping;
-	TIM_TypeDef* TIMX;
-	void (*OnTimerInterrupt)(struct TimerInstance* instance);
+  uint _Mapping;
+  uint PeripheralMapping;
+  TIM_TypeDef* TIMX;
+  void (*OnTimerInterrupt)(struct TimerInstance* instance);
 }TimerInstance;
 
 void timer_init(TimerInstance* instance, TIMConfig control);

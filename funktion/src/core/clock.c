@@ -149,294 +149,294 @@ You can use PWR_MainRegulatorModeConfig() function to control VOS bits.
 
 void clock_configure(void)
 {
-	Regset(&PWR->CR, PWR_CR_VOS_1, 1);
-	Regset(&PWR->CR, PWR_CR_VOS_1, 0);
+  Regset(&PWR->CR, PWR_CR_VOS_1, 1);
+  Regset(&PWR->CR, PWR_CR_VOS_1, 0);
 
-	//clock_mco2_init();
+  //clock_mco2_init();
 
-	RCCControl rc = {0};
-	RCCConfig cfgr = {0};
-	RCCPLLConfig pll = {0};
+  RCCControl rc = {0};
+  RCCConfig cfgr = {0};
+  RCCPLLConfig pll = {0};
 
-	//cfgr.ClockOutput2Type = MCOType_SYSCLK;
-	//cfgr.MCO1Divider = MCOPrescaler_Div4;
-	//cfgr.MCO2Divider = MCOPrescaler_Div2;
+  //cfgr.ClockOutput2Type = MCOType_SYSCLK;
+  //cfgr.MCO1Divider = MCOPrescaler_Div4;
+  //cfgr.MCO2Divider = MCOPrescaler_Div2;
 
-	cfgr.AHBDivider  = AHBPrescaler_Div1;
-	cfgr.APB1Divider = APBPrescaler_Div4;
-	cfgr.APB2Divider = APBPrescaler_Div2;
-	cfgr.ClkSwitch = ClockSwitch_PLL;
+  cfgr.AHBDivider  = AHBPrescaler_Div1;
+  cfgr.APB1Divider = APBPrescaler_Div4;
+  cfgr.APB2Divider = APBPrescaler_Div2;
+  cfgr.ClkSwitch = ClockSwitch_PLL;
 
-	cfgr.ClockDetails.AHBDivider  = 1;
-	cfgr.ClockDetails.APB1Divider = 4;
-	cfgr.ClockDetails.APB2Divider = 2;
+  cfgr.ClockDetails.AHBDivider  = 1;
+  cfgr.ClockDetails.APB1Divider = 4;
+  cfgr.ClockDetails.APB2Divider = 2;
 
-	// Core Clock = (((HSI | HSE) / PLLM) * PLL_N) / PLL_P
+  // Core Clock = (((HSI | HSE) / PLLM) * PLL_N) / PLL_P
 
-	//HSE = 8MHz
-	pll.M = 8; // 1MHz
-	pll.N = 360;
-	pll.P = PLLMainFactor_Div2;
-	pll.Q = 7;
-	pll.Source = PLLSource_HSE;
+  //HSE = 8MHz
+  pll.M = 8; // 1MHz
+  pll.N = 360;
+  pll.P = PLLMainFactor_Div2;
+  pll.Q = 7;
+  pll.Source = PLLSource_HSE;
 
-//	rc.HSIEnable = true;
+//  rc.HSIEnable = true;
 
-	rc.HSEEnable = true;
-	rc.HSEBypass = true;
-	rc.SecuritySysEnable = true;
-	rc.PLLEnable = true;
+  rc.HSEEnable = true;
+  rc.HSEBypass = true;
+  rc.SecuritySysEnable = true;
+  rc.PLLEnable = true;
 
-	clock_init(&rc, &cfgr, &pll, false);
+  clock_init(&rc, &cfgr, &pll, false);
 }
 
 void clock_init(RCCControl* rc, RCCConfig* cfgr, RCCPLLConfig* pllcfgr, bool overDriveEnable)
 {
-	Details.APB1Divider = cfgr->ClockDetails.APB1Divider;
-	Details.APB2Divider = cfgr->ClockDetails.APB2Divider;
-	Details.AHBDivider = cfgr->ClockDetails.AHBDivider;
+  Details.APB1Divider = cfgr->ClockDetails.APB1Divider;
+  Details.APB2Divider = cfgr->ClockDetails.APB2Divider;
+  Details.AHBDivider = cfgr->ClockDetails.AHBDivider;
 
-	uint freq = 0;
+  uint freq = 0;
 
-	if (cfgr->ClkSwitch == ClockSwitch_HSI)
-	{
-		freq = CLOCK_HSI;
-	}
-	else if (cfgr->ClkSwitch == ClockSwitch_HSE)
-	{
-		freq = CLOCK_HSE;
-	}
-	else if (cfgr->ClkSwitch == ClockSwitch_PLL)
-	{
-		//Core Clock = (((HSI | HSE) / PLLM) * PLL_N) / PLL_P
-		if (pllcfgr->Source == PLLSource_HSI)
-			freq = CLOCK_HSI;
-		else if (pllcfgr->Source == PLLSource_HSE)
-			freq = CLOCK_HSE;
-		freq /= pllcfgr->M;
-		freq *= pllcfgr->N;
-		freq /= ((pllcfgr->P+1)*2);
-	}
+  if (cfgr->ClkSwitch == ClockSwitch_HSI)
+  {
+    freq = CLOCK_HSI;
+  }
+  else if (cfgr->ClkSwitch == ClockSwitch_HSE)
+  {
+    freq = CLOCK_HSE;
+  }
+  else if (cfgr->ClkSwitch == ClockSwitch_PLL)
+  {
+    //Core Clock = (((HSI | HSE) / PLLM) * PLL_N) / PLL_P
+    if (pllcfgr->Source == PLLSource_HSI)
+      freq = CLOCK_HSI;
+    else if (pllcfgr->Source == PLLSource_HSE)
+      freq = CLOCK_HSE;
+    freq /= pllcfgr->M;
+    freq *= pllcfgr->N;
+    freq /= ((pllcfgr->P+1)*2);
+  }
 
-	Details.AHBFrequency = freq / Details.AHBDivider;
-	Details.APB1Frequency = Details.AHBFrequency / Details.APB1Divider;
-	Details.APB2Frequency = Details.AHBFrequency / Details.APB2Divider;
+  Details.AHBFrequency = freq / Details.AHBDivider;
+  Details.APB1Frequency = Details.AHBFrequency / Details.APB1Divider;
+  Details.APB2Frequency = Details.AHBFrequency / Details.APB2Divider;
 
-	if (Details.AHBFrequency > 180E6)
-		throw(InvalidOperationException, "AHB Frequency may not exceed 180MHz");
-	if (Details.APB1Frequency > 45E6)
-		throw(InvalidOperationException, "APB1 Frequency may not exceed 45MHz");
-	if (Details.APB2Frequency > 90E6)
-		throw(InvalidOperationException, "APB2 Frequency may not exceed 90MHz");
+  if (Details.AHBFrequency > 180E6)
+    throw(InvalidOperationException, "AHB Frequency may not exceed 180MHz");
+  if (Details.APB1Frequency > 45E6)
+    throw(InvalidOperationException, "APB1 Frequency may not exceed 45MHz");
+  if (Details.APB2Frequency > 90E6)
+    throw(InvalidOperationException, "APB2 Frequency may not exceed 90MHz");
 
-	// Configure the AHB Prescaler
-	Regset(&RCC->CFGR, RCC_CFGR_HPRE_0, (cfgr->AHBDivider) & 0x01);
-	Regset(&RCC->CFGR, RCC_CFGR_HPRE_1, (cfgr->AHBDivider) & 0x02);
-	Regset(&RCC->CFGR, RCC_CFGR_HPRE_2, (cfgr->AHBDivider) & 0x04);
-	Regset(&RCC->CFGR, RCC_CFGR_HPRE_3, (cfgr->AHBDivider) & 0x08);
+  // Configure the AHB Prescaler
+  Regset(&RCC->CFGR, RCC_CFGR_HPRE_0, (cfgr->AHBDivider) & 0x01);
+  Regset(&RCC->CFGR, RCC_CFGR_HPRE_1, (cfgr->AHBDivider) & 0x02);
+  Regset(&RCC->CFGR, RCC_CFGR_HPRE_2, (cfgr->AHBDivider) & 0x04);
+  Regset(&RCC->CFGR, RCC_CFGR_HPRE_3, (cfgr->AHBDivider) & 0x08);
 
-	// Configure the APB1 Low Speed, Prescaler
-	Regset(&RCC->CFGR, RCC_CFGR_PPRE1_0, (cfgr->APB1Divider) & 0x01);
-	Regset(&RCC->CFGR, RCC_CFGR_PPRE1_1, (cfgr->APB1Divider) & 0x02);
-	Regset(&RCC->CFGR, RCC_CFGR_PPRE1_2, (cfgr->APB1Divider) & 0x04);
+  // Configure the APB1 Low Speed, Prescaler
+  Regset(&RCC->CFGR, RCC_CFGR_PPRE1_0, (cfgr->APB1Divider) & 0x01);
+  Regset(&RCC->CFGR, RCC_CFGR_PPRE1_1, (cfgr->APB1Divider) & 0x02);
+  Regset(&RCC->CFGR, RCC_CFGR_PPRE1_2, (cfgr->APB1Divider) & 0x04);
 
-	// Configure the APB2 High Speed, Prescaler
-	Regset(&RCC->CFGR, RCC_CFGR_PPRE2_0, (cfgr->APB2Divider) & 0x01);
-	Regset(&RCC->CFGR, RCC_CFGR_PPRE2_1, (cfgr->APB2Divider) & 0x02);
-	Regset(&RCC->CFGR, RCC_CFGR_PPRE2_2, (cfgr->APB2Divider) & 0x04);
+  // Configure the APB2 High Speed, Prescaler
+  Regset(&RCC->CFGR, RCC_CFGR_PPRE2_0, (cfgr->APB2Divider) & 0x01);
+  Regset(&RCC->CFGR, RCC_CFGR_PPRE2_1, (cfgr->APB2Divider) & 0x02);
+  Regset(&RCC->CFGR, RCC_CFGR_PPRE2_2, (cfgr->APB2Divider) & 0x04);
 
-	// Configure the Microcontroller clock output 1
-	Regset(&RCC->CFGR, RCC_CFGR_MCO1_0, (cfgr->ClockOutput1Type) & 0x01);
-	Regset(&RCC->CFGR, RCC_CFGR_MCO1_1, (cfgr->ClockOutput1Type) & 0x02);
+  // Configure the Microcontroller clock output 1
+  Regset(&RCC->CFGR, RCC_CFGR_MCO1_0, (cfgr->ClockOutput1Type) & 0x01);
+  Regset(&RCC->CFGR, RCC_CFGR_MCO1_1, (cfgr->ClockOutput1Type) & 0x02);
 
-	Regset(&RCC->CFGR, RCC_CFGR_MCO1PRE_0, (cfgr->MCO1Divider) & 0x01);
-	Regset(&RCC->CFGR, RCC_CFGR_MCO1PRE_1, (cfgr->MCO1Divider) & 0x02);
-	Regset(&RCC->CFGR, RCC_CFGR_MCO1PRE_2, (cfgr->MCO1Divider) & 0x04);
+  Regset(&RCC->CFGR, RCC_CFGR_MCO1PRE_0, (cfgr->MCO1Divider) & 0x01);
+  Regset(&RCC->CFGR, RCC_CFGR_MCO1PRE_1, (cfgr->MCO1Divider) & 0x02);
+  Regset(&RCC->CFGR, RCC_CFGR_MCO1PRE_2, (cfgr->MCO1Divider) & 0x04);
 
-	// Configure the Microcontroller clock output 2
-	Regset(&RCC->CFGR, RCC_CFGR_MCO2_0, (cfgr->ClockOutput2Type) & 0x01);
-	Regset(&RCC->CFGR, RCC_CFGR_MCO2_1, (cfgr->ClockOutput2Type) & 0x02);
+  // Configure the Microcontroller clock output 2
+  Regset(&RCC->CFGR, RCC_CFGR_MCO2_0, (cfgr->ClockOutput2Type) & 0x01);
+  Regset(&RCC->CFGR, RCC_CFGR_MCO2_1, (cfgr->ClockOutput2Type) & 0x02);
 
-	Regset(&RCC->CFGR, RCC_CFGR_MCO2PRE_0, (cfgr->MCO2Divider) & 0x01);
-	Regset(&RCC->CFGR, RCC_CFGR_MCO2PRE_1, (cfgr->MCO2Divider) & 0x02);
-	Regset(&RCC->CFGR, RCC_CFGR_MCO2PRE_2, (cfgr->MCO2Divider) & 0x04);
+  Regset(&RCC->CFGR, RCC_CFGR_MCO2PRE_0, (cfgr->MCO2Divider) & 0x01);
+  Regset(&RCC->CFGR, RCC_CFGR_MCO2PRE_1, (cfgr->MCO2Divider) & 0x02);
+  Regset(&RCC->CFGR, RCC_CFGR_MCO2PRE_2, (cfgr->MCO2Divider) & 0x04);
 
-	/* Configure RCC_PLLCFGR */
+  /* Configure RCC_PLLCFGR */
 
-	// Core Clock = (((HSI | HSE) / PLLM) * PLL_N) / PLL_P
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLSRC, pllcfgr->Source);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_0, (pllcfgr->M) & 0x01);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_1, (pllcfgr->M) & 0x02);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_2, (pllcfgr->M) & 0x04);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_3, (pllcfgr->M) & 0x08);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_4, (pllcfgr->M) & 0x10);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_5, (pllcfgr->M) & 0x20);
+  // Core Clock = (((HSI | HSE) / PLLM) * PLL_N) / PLL_P
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLSRC, pllcfgr->Source);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_0, (pllcfgr->M) & 0x01);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_1, (pllcfgr->M) & 0x02);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_2, (pllcfgr->M) & 0x04);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_3, (pllcfgr->M) & 0x08);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_4, (pllcfgr->M) & 0x10);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLM_5, (pllcfgr->M) & 0x20);
 
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_0, (pllcfgr->N) & 0x0001);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_1, (pllcfgr->N) & 0x0002);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_2, (pllcfgr->N) & 0x0004);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_3, (pllcfgr->N) & 0x0008);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_4, (pllcfgr->N) & 0x0010);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_5, (pllcfgr->N) & 0x0020);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_6, (pllcfgr->N) & 0x0040);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_7, (pllcfgr->N) & 0x0080); // ?
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_8, (pllcfgr->N) & 0x0100);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_0, (pllcfgr->N) & 0x0001);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_1, (pllcfgr->N) & 0x0002);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_2, (pllcfgr->N) & 0x0004);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_3, (pllcfgr->N) & 0x0008);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_4, (pllcfgr->N) & 0x0010);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_5, (pllcfgr->N) & 0x0020);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_6, (pllcfgr->N) & 0x0040);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_7, (pllcfgr->N) & 0x0080); // ?
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLN_8, (pllcfgr->N) & 0x0100);
 
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLP_0, (pllcfgr->P) & 0x01);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLP_1, (pllcfgr->P) & 0x02);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLP_0, (pllcfgr->P) & 0x01);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLP_1, (pllcfgr->P) & 0x02);
 
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLQ_0, (pllcfgr->Q) & 0x01);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLQ_1, (pllcfgr->Q) & 0x02);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLQ_2, (pllcfgr->Q) & 0x04);
-	Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLQ_3, (pllcfgr->Q) & 0x08);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLQ_0, (pllcfgr->Q) & 0x01);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLQ_1, (pllcfgr->Q) & 0x02);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLQ_2, (pllcfgr->Q) & 0x04);
+  Regset(&RCC->PLLCFGR, RCC_PLLCFGR_PLLQ_3, (pllcfgr->Q) & 0x08);
 
-	/* Configure RCC_CR */
-	Regset(&RCC->CR, RCC_CR_HSEBYP, rc->HSEBypass);
-	Regset(&RCC->CR, RCC_CR_CSSON,  rc->SecuritySysEnable);
+  /* Configure RCC_CR */
+  Regset(&RCC->CR, RCC_CR_HSEBYP, rc->HSEBypass);
+  Regset(&RCC->CR, RCC_CR_CSSON,  rc->SecuritySysEnable);
 
-	// Enable the HSI
-	Regset(&RCC->CR, RCC_CR_HSION, rc->HSIEnable);
-	if (rc->HSIEnable)
-		while(!(RCC->CR & RCC_CR_HSIRDY));
+  // Enable the HSI
+  Regset(&RCC->CR, RCC_CR_HSION, rc->HSIEnable);
+  if (rc->HSIEnable)
+    while(!(RCC->CR & RCC_CR_HSIRDY));
 
-	// Enable the HSE
-	Regset(&RCC->CR, RCC_CR_HSEON, rc->HSEEnable);
-	if (rc->HSEEnable)
-		while(!(RCC->CR & RCC_CR_HSERDY));
+  // Enable the HSE
+  Regset(&RCC->CR, RCC_CR_HSEON, rc->HSEEnable);
+  if (rc->HSEEnable)
+    while(!(RCC->CR & RCC_CR_HSERDY));
 
-	// Enable the PLL
-	Regset(&RCC->CR, RCC_CR_PLLON, rc->PLLEnable);
-	if (rc->PLLEnable)
-		while(!(RCC->CR & RCC_CR_PLLRDY));
+  // Enable the PLL
+  Regset(&RCC->CR, RCC_CR_PLLON, rc->PLLEnable);
+  if (rc->PLLEnable)
+    while(!(RCC->CR & RCC_CR_PLLRDY));
 
-	// Enable the PLL I2S
-	Regset(&RCC->CR, RCC_CR_PLLI2SON, rc->PLLI2SEnable);
-	if (rc->PLLI2SEnable)
-		while(!(RCC->CR & RCC_CR_PLLI2SRDY));
+  // Enable the PLL I2S
+  Regset(&RCC->CR, RCC_CR_PLLI2SON, rc->PLLI2SEnable);
+  if (rc->PLLI2SEnable)
+    while(!(RCC->CR & RCC_CR_PLLI2SRDY));
 
-	// Page 124. Activating Over-drive
+  // Page 124. Activating Over-drive
 
-	if (overDriveEnable)
-	{
-		// Freezes? who cares for the moment we dont need it.
+  if (overDriveEnable)
+  {
+    // Freezes? who cares for the moment we dont need it.
 
-		PWR->CR |= PWR_CR_ODEN;
-		while (!(PWR->CSR & PWR_CSR_ODRDY));
+    PWR->CR |= PWR_CR_ODEN;
+    while (!(PWR->CSR & PWR_CSR_ODRDY));
 
-		if (rc->PLLEnable)
-			while(!(RCC->CR & RCC_CR_PLLRDY));
-	}
+    if (rc->PLLEnable)
+      while(!(RCC->CR & RCC_CR_PLLRDY));
+  }
 
-	// Page 81. Increasing the CPU Frequency and FLASH Latency
-	// The following assumes a voltage range of 2.7v - 3.6v.
+  // Page 81. Increasing the CPU Frequency and FLASH Latency
+  // The following assumes a voltage range of 2.7v - 3.6v.
 
-	int hclk = Details.AHBFrequency;
-	int waitStates = 0;
+  int hclk = Details.AHBFrequency;
+  int waitStates = 0;
 
-	if (hclk > 0 && hclk <= 30E6)
-		waitStates = 0;
-	else if (hclk > 30E6 && hclk <= 60E6)
-		waitStates = 1;
-	else if (hclk > 60E6 && hclk <= 90E6)
-		waitStates = 2;
-	else if (hclk > 90E6 && hclk <= 120E6)
-		waitStates = 3;
-	else if (hclk > 120E6 && hclk <= 150E6)
-		waitStates = 4;
-	else if (hclk > 150E6 && hclk <= 180E6)
-		waitStates = 5;
+  if (hclk > 0 && hclk <= 30E6)
+    waitStates = 0;
+  else if (hclk > 30E6 && hclk <= 60E6)
+    waitStates = 1;
+  else if (hclk > 60E6 && hclk <= 90E6)
+    waitStates = 2;
+  else if (hclk > 90E6 && hclk <= 120E6)
+    waitStates = 3;
+  else if (hclk > 120E6 && hclk <= 150E6)
+    waitStates = 4;
+  else if (hclk > 150E6 && hclk <= 180E6)
+    waitStates = 5;
 
-	FLASH->ACR |= waitStates << 0;
+  FLASH->ACR |= waitStates << 0;
 
-	// Configure Clock Switch
-	Regset(&RCC->CFGR, RCC_CFGR_SW_0, (cfgr->ClkSwitch) & 0x01);
-	Regset(&RCC->CFGR, RCC_CFGR_SW_1, (cfgr->ClkSwitch) & 0x02);
+  // Configure Clock Switch
+  Regset(&RCC->CFGR, RCC_CFGR_SW_0, (cfgr->ClkSwitch) & 0x01);
+  Regset(&RCC->CFGR, RCC_CFGR_SW_1, (cfgr->ClkSwitch) & 0x02);
 
-	systick_init();
+  systick_init();
 }
 
 void clock_mco1_init(void)
 {
-	gpio_init(GPIOA, GPIOMode_AltFunction, GPIOOutputType_PushPull, GPIOSpeed_80MHz_100MHz, GPIOResistor_NoPull, 8);
+  gpio_init(GPIOA, GPIOMode_AltFunction, GPIOOutputType_PushPull, GPIOSpeed_80MHz_100MHz, GPIOResistor_NoPull, 8);
 }
 
 void clock_mco2_init(void)
 {
-	gpio_init(GPIOC, GPIOMode_AltFunction, GPIOOutputType_PushPull, GPIOSpeed_80MHz_100MHz, GPIOResistor_NoPull, 9);
+  gpio_init(GPIOC, GPIOMode_AltFunction, GPIOOutputType_PushPull, GPIOSpeed_80MHz_100MHz, GPIOResistor_NoPull, 9);
 }
 
 void systick_init(void)
-{  
-	// By default, the STM32F4 uses a 16MHz High speed internal clock (HSI).
-	// Interrupt every 1mS.
-	while (SysTick_Config(Details.AHBFrequency / 1000) != 0);
-} 
+{
+  // By default, the STM32F4 uses a 16MHz High speed internal clock (HSI).
+  // Interrupt every 1mS.
+  while (SysTick_Config(Details.AHBFrequency / 1000) != 0);
+}
 
 void runtime_reset(void)
 {
-	RunTime rt = {0};
-	Runtime = rt;
+  RunTime rt = {0};
+  Runtime = rt;
 }
 
 RunTime runtime_get(void)
 {
-	return Runtime;
+  return Runtime;
 }
 
 ulong runtime_milliseconds(void)
 {
-	ulong total = 0;
-	total += Runtime.milliseconds;
-	total += (Runtime.seconds * 1000);
-	total += (Runtime.minutes * 60 * 1000);
-	total += (Runtime.hours * 60 * 60 * 1000);
-	total += (Runtime.days * 24 * 60 * 60 * 1000);
-	return total;
+  ulong total = 0;
+  total += Runtime.milliseconds;
+  total += (Runtime.seconds * 1000);
+  total += (Runtime.minutes * 60 * 1000);
+  total += (Runtime.hours * 60 * 60 * 1000);
+  total += (Runtime.days * 24 * 60 * 60 * 1000);
+  return total;
 }
 
 ClockDetails clock_details(void)
 {
-	return Details;
+  return Details;
 }
 
 void systick_subscribe(void(*callback)(void))
 {
-	systick_update = callback;
+  systick_update = callback;
 }
 
 // Calculate the running time.
 static void calculate_runtime(void)
 {
-	Runtime.milliseconds ++;
-	
-	if (Runtime.milliseconds >= 1E3)
-	{
-		Runtime.milliseconds = 0;
-		Runtime.seconds ++;
-	}
-	if (Runtime.seconds >= 60)
-	{
-		Runtime.seconds = 0;
-		Runtime.minutes ++;
-	}
-	if (Runtime.minutes >= 60)
-	{
-		Runtime.minutes = 0;
-		Runtime.hours ++;
-	}
+  Runtime.milliseconds ++;
+
+  if (Runtime.milliseconds >= 1E3)
+  {
+    Runtime.milliseconds = 0;
+    Runtime.seconds ++;
+  }
+  if (Runtime.seconds >= 60)
+  {
+    Runtime.seconds = 0;
+    Runtime.minutes ++;
+  }
+  if (Runtime.minutes >= 60)
+  {
+    Runtime.minutes = 0;
+    Runtime.hours ++;
+  }
 }
 
 
 // Interrupts ever 1mS.
 void SysTick_Handler(void)
 {
-	// Calculate running time. 
-	// This feature can be used for accurately determining delay periods
-	// Or the amount of time the system has been running for
-	calculate_runtime();
-  
-	if (systick_update != NULL)
-		systick_update();
+  // Calculate running time.
+  // This feature can be used for accurately determining delay periods
+  // Or the amount of time the system has been running for
+  calculate_runtime();
+
+  if (systick_update != NULL)
+    systick_update();
 }
 
 void WWDG_IRQHandler(void)

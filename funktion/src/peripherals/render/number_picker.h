@@ -5,9 +5,9 @@
 #include "render.h"
 
 typedef struct{
-	Point Position;
-	uint Value;
-	uint SelectedIndex;
+  Point Position;
+  uint Value;
+  uint SelectedIndex;
 }NumberPicker;
 
 NumberPicker number_picker_init(Point p);

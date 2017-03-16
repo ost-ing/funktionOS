@@ -6,20 +6,20 @@
 
 typedef struct
 {
-	/* Configuration Variables */
-	uint Baudrate;
-	uint TxPin;
-	uint RxPin;
-	USART_TypeDef* USARTX;
-	GPIO_TypeDef* GPIOX;
-	int Priority;
+  /* Configuration Variables */
+  uint Baudrate;
+  uint TxPin;
+  uint RxPin;
+  USART_TypeDef* USARTX;
+  GPIO_TypeDef* GPIOX;
+  int Priority;
 
-	/* Private Variables */
-	USARTInstance _Usart;
-	uint _Mapping;
-	uint _BufferIndex;
-	bool _LastByteSync;
-	uchar _ReceiveBuffer[RX_BUFFER_SIZE];
+  /* Private Variables */
+  USARTInstance _Usart;
+  uint _Mapping;
+  uint _BufferIndex;
+  bool _LastByteSync;
+  uchar _ReceiveBuffer[RX_BUFFER_SIZE];
 }SerialInstance;
 
 

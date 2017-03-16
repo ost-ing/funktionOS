@@ -7,38 +7,38 @@
 
 typedef enum
 {
-	PulseCommand_Reserved  = 0x00,
-	PulseCommand_Start     = 0x01,
-	PulseCommand_Stop      = 0x02,
-	PulseCommand_Configure = 0x03,
+  PulseCommand_Reserved  = 0x00,
+  PulseCommand_Start     = 0x01,
+  PulseCommand_Stop      = 0x02,
+  PulseCommand_Configure = 0x03,
 }PulseCommand;
 
 typedef enum
 {
-	PulseFlag_Reserved = 0x00,
-	PulseFlag_Looping  = 0x01,
+  PulseFlag_Reserved = 0x00,
+  PulseFlag_Looping  = 0x01,
 }PulseFlag;
 
 typedef struct
 {
-	bool States[PULSE_SEQUENCE_MAXSIZE];
-	uint Micros[PULSE_SEQUENCE_MAXSIZE];
-	uint Index;
-	uint Size;
+  bool States[PULSE_SEQUENCE_MAXSIZE];
+  uint Micros[PULSE_SEQUENCE_MAXSIZE];
+  uint Index;
+  uint Size;
 }PulseSequenceMap;
 
 typedef struct
 {
-	/* Configuration variables */
-	GPIO_TypeDef* GPIOX;
-	uchar Pin;
-	PulseSequenceMap SequenceMap;
-	TimerInstance* Timer;
+  /* Configuration variables */
+  GPIO_TypeDef* GPIOX;
+  uchar Pin;
+  PulseSequenceMap SequenceMap;
+  TimerInstance* Timer;
 
-	/* State variables */
-	bool _IsRunning;
-	bool _IsLooping;
-	uint _Mapping;
+  /* State variables */
+  bool _IsRunning;
+  bool _IsLooping;
+  uint _Mapping;
 }PulseInstance;
 
 void pulse_generator_init(PulseInstance* instance);
