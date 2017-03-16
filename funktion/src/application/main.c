@@ -44,10 +44,10 @@ int main(void)
     serial_println("Console initialised");
 
 		// Initialise the AD9833 and Pulse geneator. These can be controlled via the serial port
-		ad9833_init(&Timer);
-		serial_println("AD9833 initialised");
+    ad9833_init(&Timer);
+    serial_println("AD9833 initialised");
 
-		pulse_generator_init(&Pulse);
+    pulse_generator_init(&Pulse);
     serial_println("Pulse Generator initialised");
 
     // Some tests
