@@ -110,7 +110,7 @@ void serial_println(char* string)
 // Prints a series of ascii characters on the serial port for the specified SerialInstance.
 void serial_instance_print(SerialInstance* instance, char* string)
 {
-  while (*string)
+  while (*string) // Unsafe & exploitable
   {
     usart_write(&instance->_Usart, *string++);
   }
